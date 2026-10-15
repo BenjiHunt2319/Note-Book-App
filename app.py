@@ -11,6 +11,9 @@ class NotePad:
         self.root.resizable(False, False)
         self.current_file = ""
         
+        # custom sytles
+        self.btnFont = ("Verdana", 14, "bold")
+        
         # call all widgets
         self.widgets()
         
@@ -33,19 +36,19 @@ class NotePad:
         # =======================================
         
         # save the current edit to the current file
-        self.saveBtn = Button(self.frame, text="Save", font=("Verdana", 12), width=12, pady=10, command=self.saveFile)
+        self.saveBtn = Button(self.frame, text="Save", font=self.btnFont, width=12, pady=10, command=self.saveFile)
         self.saveBtn.grid(row=2, column=0, sticky="nsew", padx=(0, 5), pady=(0, 5))
         
         # view the current file
-        self.viewBtn = Button(self.frame, text="View", font=("Verdana", 12), width=12, pady=10, command=self.viewFile)
+        self.viewBtn = Button(self.frame, text="View", font=self.btnFont, width=12, pady=10, command=self.viewFile)
         self.viewBtn.grid(row=2, column=1, sticky="nsew", pady=(0, 5))
 
         # add a new text file
-        self.newBtn = Button(self.frame, text="New", font=("Verdana", 12), width=12, pady=10, command=self.newFile)
+        self.newBtn = Button(self.frame, text="New", font=self.btnFont, width=12, pady=10, command=self.newFile)
         self.newBtn.grid(row=3, column=0, sticky="nsew", padx=(0, 5))
         
         # browse files to select a exsisting file        
-        self.browseBtn = Button(self.frame, text="Browse", font=("Verdana", 12), width=12, pady=10, command=self.browseFiles)
+        self.browseBtn = Button(self.frame, text="Browse", font=self.btnFont, width=12, pady=10, command=self.browseFiles)
         self.browseBtn.grid(row=3, column=1, sticky="nsew")
         
     
@@ -100,13 +103,15 @@ class NotePad:
         
     
     def viewFile(self):
-        self.viewBox = Toplevel(self.root, padx=20, pady=20)
-        
-        with open(self.current_file, "r") as file:
-            self.content = file.read()
-            self.viewEntry = Text(self.viewBox)
-            self.viewEntry.pack()
-            self.viewEntry.insert("1.0", self.content)
+        if self.current_file:
+            self.viewBox = Toplevel(self.root, padx=20, pady=20)
+            with open(self.current_file, "r") as file:
+                self.content = file.read()
+                self.viewEntry = Text(self.viewBox)
+                self.viewEntry.pack()
+                self.viewEntry.insert("1.0", self.content)
+        else:
+            msg.showerror("Error", "No File selected\nPlease open a file first.")
 
 
 # run the app
